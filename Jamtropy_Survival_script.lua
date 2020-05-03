@@ -8,7 +8,7 @@ function OnStart(scenario)
 end
 
 local newCircularSpawner = function(unitCreator)
-    local radius = 250
+    local radius = 350
     local innerRadius = 15
     local z = 25.9844
 
@@ -17,27 +17,32 @@ local newCircularSpawner = function(unitCreator)
         y = ScenarioInfo.size[1] / 2
     }
 
+    local function spawnSingleUnit(unitId)
+        local angle = math.rad(Random(0, 360))
+
+        local unit = unitCreator.create({
+            blueprintName = unitId,
+            armyName = "SURVIVAL_ENEMY",
+            x = center.x + radius * math.sin(angle),
+            y = center.y + radius * math.cos(angle),
+            z = z,
+            yawInRadians = angle - math.pi
+        })
+
+        IssueAggressiveMove(
+            {unit},
+            VECTOR3(
+                center.x + innerRadius * math.sin(angle),
+                z,
+                center.y + innerRadius * math.cos(angle)
+            )
+        )
+    end
+
     return {
         spawnUnit = function(unitId, unitCount)
             for _ = 0, unitCount or 1 do
-                local angle = math.rad(Random(0, 360))
-
-                local unit = unitCreator.create({
-                    blueprintName = unitId,
-                    armyName = "SURVIVAL_ENEMY",
-                    x = center.x + radius * math.sin(angle),
-                    y = center.y + radius * math.cos(angle),
-                    z = z
-                })
-
-                IssueMove(
-                    {unit},
-                    VECTOR3(
-                        center.x + innerRadius * math.sin(angle),
-                        z,
-                        center.y + innerRadius * math.cos(angle)
-                    )
-                )
+                spawnSingleUnit(unitId)
             end
         end
     }

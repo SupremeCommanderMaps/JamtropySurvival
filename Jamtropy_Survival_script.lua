@@ -7,9 +7,33 @@ end
 function OnStart(scenario)
 end
 
-local newCircularSpawner = function(unitCreator)
+local newAngleGenerator = function()
+    local function angleIsValid(angle)
+        return ( angle > -40 ) and ( angle < 40 )
+            --( angle > -40 and angle < 40 )
+            --or ( angle > 140 and angle < 220 )
+            --or ( angle > 80 and angle < 100 )
+            --or ( angle > 260 and angle < 280 )
+    end
+
+    return {
+        randomAngle = function()
+            local angle
+
+            while true do
+                angle = math.rad(Random(180, 360))
+
+                if angleIsValid(angle) then
+                    return angle
+                end
+            end
+        end
+    }
+end
+
+local newCircularSpawner = function(unitCreator, angleGenerator)
     local radius = 490
-    local innerRadius = 15
+    local innerRadius = 50
     local z = 25.9844
 
     local center = {
@@ -18,7 +42,7 @@ local newCircularSpawner = function(unitCreator)
     }
 
     local function spawnSingleUnit(unitId)
-        local angle = math.rad(Random(0, 360))
+        local angle = angleGenerator.randomAngle()
 
         local unit = unitCreator.create({
             blueprintName = unitId,
@@ -50,7 +74,7 @@ end
 
 local mapPath = '/maps/Jamtropy_Survival.v0001/'
 local entropyLib = import(mapPath .. 'vendor/EntropyLib/src/EntropyLib.lua').newInstance(mapPath .. 'vendor/EntropyLib/')
-local circularSpawner = newCircularSpawner(entropyLib.newUnitCreator())
+local circularSpawner = newCircularSpawner(entropyLib.newUnitCreator(), newAngleGenerator())
 
 function OnShiftF3()
     circularSpawner.spawnUnit("XAL0203")

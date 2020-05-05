@@ -8,7 +8,7 @@ function OnStart(scenario)
 end
 
 local newCircularSpawner = function(unitCreator)
-    local radius = 350
+    local radius = 490
     local innerRadius = 15
     local z = 25.9844
 
@@ -53,11 +53,11 @@ local entropyLib = import(mapPath .. 'vendor/EntropyLib/src/EntropyLib.lua').new
 local circularSpawner = newCircularSpawner(entropyLib.newUnitCreator())
 
 function OnShiftF3()
-    circularSpawner.spawnUnit("DEL0204") -- Best unit clearly
+    circularSpawner.spawnUnit("XAL0203")
 end
 
 function OnShiftF4()
-    circularSpawner.spawnUnit("DEL0204", 100)
+    circularSpawner.spawnUnit("XAL0203", 100)
 end
 
 function OnShiftF5()
@@ -65,7 +65,7 @@ function OnShiftF5()
         local iteration = 0
 
         while iteration < 15 do
-            circularSpawner.spawnUnit("DEL0204", 20)
+            circularSpawner.spawnUnit("XAL0203", 20)
             WaitSeconds(1)
             iteration = iteration + 1
         end

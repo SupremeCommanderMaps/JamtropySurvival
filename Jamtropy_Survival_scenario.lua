@@ -4,6 +4,7 @@ ScenarioInfo = {
     description = "Adaptive survival map by Jammer and EntropyWins",
     preview = '',
     map_version = 1,
+    AdaptiveMap = true,
     type = 'skirmish',
     starts = true,
     size = {1024, 1024},
